@@ -22,21 +22,7 @@
             <li>Log Out</li>
         </ul>
     </navigation>
-  <div class="container upload-label">
-        <h5>This app can transcribe speech audio files. When you are done 
-            with your transcription, hit save to keep your results. You can keep track
-            of your results in My Transcriptions. 
-        </h5>
-   </div>
-   <div class="container" id="form">
-        <form action="http://storage.googleapis.com/voiceappbucket" 
-            method=POST enctype="multipart/form-data" onclick="console.log('two butts')">
-            <input type="hidden" name="key" value="filename">
-            <input type="hidden" name="success_action_status" value="201">
-            <input type="file" id="audio" name="audio" accept="audio/*">
-            <input type="submit">
-        </form>
-    </div>
+ 
         <!-- <i id="micBtn" class="material-icons">mic</i> -->
     <div class="container result-divs">
         <h5>Your transcription will appear here:</h5>
@@ -46,3 +32,4 @@
     <%- body %>
 </body>
 </html>
+

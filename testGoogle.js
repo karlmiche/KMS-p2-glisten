@@ -3,6 +3,12 @@
 
 const express = require("express");
 const multer  = require('multer')
+let uploads = multer({ dest: 'uploads/' })
+// // Imports the Google Cloud client library
+const {Storage} = require('@google-cloud/storage');
+const storage = new Storage();
+
+
 
 //set up our app
 let router = express.Router();
@@ -40,18 +46,7 @@ let router = express.Router();
 //       config: config,
 //       audio: audio,
 //     };
-  
-//   //   // Detects speech in the audio file. This creates a recognition job that you
-//   //   // can wait for now, or get its result later.
-//     const [operation] = await client.longRunningRecognize(request);
-//     // Get a Promise representation of the final result of the job
-//     const [response] = await operation.promise();
-//     const transcription = response.results
-//       .map(result => result.alternatives[0].transcript)
-//       .join('\n');
-//     console.log(`Transcription: ${transcription}`);
-//   }
-//   main().catch(console.error);
+
 
 //THIS ONE WORKS DO NOT MESS WITH IT
 // //SHORT AUDIO CALL ROUTE
@@ -63,21 +58,44 @@ router.get("/", async (req, res) => {
     //add transcription by sending object
     //object needs to be called before it will render
     let transcription = "testYYYYY";
-    res.render("testCall", {transcription})  
+    res.render("form", {transcription})  
   } catch(error){
     console.error(error);
   }
 })
 
-router.post("/", (req, res) => {
-    //front end sees a form
-    //front end can select a file through this form and hit "submit"
-    //when front end hit submit, the file is sent to google buckets: voiceappbucket
-    //my submitted file with name filename is retrieved from google buckets
-    //do I need main(req.body.filename)?
+router.post("/", uploads.single("filename"),(req, res) => {
+  console.log("biggbutts - post route hit");
+  //get the input field from the user
+  let filename = req.file.path;
+  // console.log(file);
+  let transcription = "testyYY";
+  const bucketName = 'voiceappbucket';
+  async function uploadFile() {
+    // Uploads a local file to the bucket
+    await storage.bucket(bucketName).upload(filename, {
+      // Support for HTTP requests made with `Accept-Encoding: gzip`
+      gzip: true,
+      // By setting the option `destination`, you can change the name of the
+      // object you are uploading to a bucket.
+      metadata: {
+        // Enable long-lived HTTP caching headers
+        // Use only if the contents of the file will never change
+        // (If the contents will change, use cacheControl: 'no-cache')
+        cacheControl: 'public, max-age=31536000',
+      },
+    });
+    console.log(`${filename} uploaded to ${bucketName}.`);
+  }
+
+  uploadFile().catch(console.error);
+   
     //transcription is performed on my specific submitted file "filename"
     //I see the results of the transcription in the results div
-    res.render("testCall", {transcription})
+    //I can save the results to my database with a save button
+    //I can see the transcription in "My Transcriptions"
+
+    res.render("form", {transcription})
   })
 
 
@@ -137,34 +155,7 @@ router.post("/", (req, res) => {
 // /*******
 //  * Where do we store files?
 //BUCKETS WORK NOW FOR ME, AT LEAST
-// const bucketName = 'voiceappbucket';
-// const filename = 'test.mp3';
 
-// // Imports the Google Cloud client library
-// const {Storage} = require('@google-cloud/storage');
-
-// // Creates a client
-// const storage = new Storage();
-
-// async function uploadFile() {
-//   // Uploads a local file to the bucket
-//   await storage.bucket(voiceappbucket).upload(filename, {
-//     // Support for HTTP requests made with `Accept-Encoding: gzip`
-//     gzip: true,
-//     // By setting the option `destination`, you can change the name of the
-//     // object you are uploading to a bucket.
-//     metadata: {
-//       // Enable long-lived HTTP caching headers
-//       // Use only if the contents of the file will never change
-//       // (If the contents will change, use cacheControl: 'no-cache')
-//       cacheControl: 'public, max-age=31536000',
-//     },
-//   });
-
-//   console.log(`${filename} uploaded to ${bucketName}.`);
-// }
-
-// uploadFile().catch(console.error);
 
 
 
