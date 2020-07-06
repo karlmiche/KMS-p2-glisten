@@ -7,49 +7,14 @@ let uploads = multer({ dest: 'uploads/' })
 // // Imports the Google Cloud client library
 const {Storage} = require('@google-cloud/storage');
 const storage = new Storage();
+const speech = require('@google-cloud/speech');
+const client = new speech.SpeechClient();
 
 
 
 //set up our app
 let router = express.Router();
 
-
-/*********
- * Test Call for Long Audio
- */
-// async function main() {
-//     // Imports the Google Cloud client library
-//     const speech = require('@google-cloud/speech');
-  
-//   //   // Creates a client
-//     const client = new speech.SpeechClient();
-  
-//     /**
-//      * TODO(developer): Uncomment the following lines before running the sample.
-//      */
-//     const gcsUri = `gs://voiceappbucket/${filename}`;
-//     const encoding = 'FLAC';
-//     const sampleRateHertz = 16000;
-//     const languageCode = 'en-US';
-  
-//     const config = {
-//       encoding: encoding,
-//       sampleRateHertz: sampleRateHertz,
-//       languageCode: languageCode,
-//     };
-  
-//     const audio = {
-//       uri: gcsUri,
-//     };
-  
-//     const request = {
-//       config: config,
-//       audio: audio,
-//     };
-
-
-//THIS ONE WORKS DO NOT MESS WITH IT
-// //SHORT AUDIO CALL ROUTE
 router.get("/", async (req, res) => {
   try{
     // let transcription = await main().catch(console.error);
@@ -76,30 +41,60 @@ router.post("/", uploads.single("filename"),(req, res) => {
     await storage.bucket(bucketName).upload(filename, {
       // Support for HTTP requests made with `Accept-Encoding: gzip`
       gzip: true,
-      // By setting the option `destination`, you can change the name of the
-      // object you are uploading to a bucket.
       metadata: {
-        // Enable long-lived HTTP caching headers
-        // Use only if the contents of the file will never change
-        // (If the contents will change, use cacheControl: 'no-cache')
         cacheControl: 'public, max-age=31536000',
       },
     });
     console.log(`${filename} uploaded to ${bucketName}.`);
+    res.redirect(`/${req.file.filename}`)
   }
-
   uploadFile().catch(console.error);
-   
-    //transcription is performed on my specific submitted file "filename"
-    //I see the results of the transcription in the results div
-    //I can save the results to my database with a save button
-    //I can see the transcription in "My Transcriptions"
-
-    res.render("form", {transcription})
-  })
+})
 
 
+router.get("/:file", (req, res) => {
+  async function main() {
+    // Imports the Google Cloud client library
+    const gcsUri = `gs://voiceappbucket/Record-_online-voice-recorder.com_.flac`;
+    const encoding = 'FLAC';
+    const sampleRateHertz = 48000;
+    const languageCode = 'en-US';
+  
+    const config = {
+      encoding: encoding,
+      sampleRateHertz: sampleRateHertz,
+      languageCode: languageCode,
+    };
+  
+    const audio = {
+      uri: gcsUri,
+    };
+  
+    const request = {
+      config: config,
+      audio: audio,
+    };
 
+    // Detects speech in the audio file
+    const [operation] = await client.longRunningRecognize(request)
+    const [response] = await operation.promise()
+    console.log(response);
+    const transcription = response.results.map(result => result.alternatives[0].transcript)
+    .join('\n');
+    console.log(`Transcription: ${transcription}`);
+    try{
+      let transcription = await main().catch(console.error);
+      console.log(`🦉 The transcription I got was ${transcription}`)
+      console.log(transcription);
+      //add transcription by sending object
+      //object needs to be called before it will render
+      res.render("results", {transcription}); 
+    } catch(error){
+      console.error(error);
+    }
+  }
+  main().catch(console.error);
+})
 
 
 // /**********
@@ -137,15 +132,6 @@ router.post("/", uploads.single("filename"),(req, res) => {
 //     config: config,
 //   };
 
-//   // Detects speech in the audio file
-//   const [response] = await client.recognize(request).catch(console.error);
-//   const transcription = response.results
-//     .map(result => result.alternatives[0].transcript)
-//     .join('\n');
-//   console.log(`Transcription: ${transcription}`);
-//     return transcription;
-// }
-// main().catch(console.error);
 
 // //set up our app to listen
 // app.listen(3001, () => {
