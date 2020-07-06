@@ -1,24 +1,48 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Auth Boilerplate</title>
-    </head>
-    <body>
-        <header>
-            <nav>
-                <% if (currentUser) { %> 
-                    <a href="/auth/logout">Logout</a>
-                    <a href="/profile">Profile</a>
-                <% } else { %>
-                    <a href="/auth/register">Register</a>
-                    <a href="/auth/login">Login</a>
-                <% } %> 
-
-            </nav>
-        </header>
-        <div class="container">
-            <h1>Authenticating Users 🍟</h1>
-            <%- body %>
-        </div>
-    </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond&family=Playfair+Display&display=swap');
+        </style>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
+    <title>P2 testing</title>
+</head>
+<body>
+    <navigation>
+        <ul id="navvy">
+            <li>Home</li>
+            <li>Upload Audio</li>
+            <li>My Transcriptions</li>
+            <li>Analyses</li>
+            <li>Sign In</li>
+            <li>Log Out</li>
+        </ul>
+    </navigation>
+  <div class="container upload-label">
+        <h5>This app can transcribe speech audio files. When you are done 
+            with your transcription, hit save to keep your results. You can keep track
+            of your results in My Transcriptions. 
+        </h5>
+   </div>
+   <div class="container" id="form">
+        <form action="http://storage.googleapis.com/voiceappbucket" 
+            method=POST enctype="multipart/form-data" onclick="console.log('two butts')">
+            <input type="hidden" name="key" value="filename">
+            <input type="hidden" name="success_action_status" value="201">
+            <input type="file" id="audio" name="audio" accept="audio/*">
+            <input type="submit">
+        </form>
+    </div>
+        <!-- <i id="micBtn" class="material-icons">mic</i> -->
+    <div class="container result-divs">
+        <h5>Your transcription will appear here:</h5>
+        <div id="circle"></div>
+        <p></p>
+    </div>
+    <%- body %>
+</body>
 </html>

@@ -1,0 +1,75 @@
+body {
+    font-family: 'Playfair Display', serif;
+}
+
+li{
+    display: flex;
+    margin-right: 4vw;
+    margin-left: 4vw;
+    justify-content: center;
+}
+
+h1, h2, h3, h4, h5 {
+    color: rgb(55, 55, 170);
+}
+
+#navvy{    
+    color: black;
+    display: flex;
+    width: 100vw;
+    height: 4vw;
+    border-bottom: 4px dotted goldenrod;
+}
+
+nav{
+    width: 100vw;
+    height: 50px;
+}
+
+li {
+    font-size: 1.8vw;
+}
+
+input{
+    font-family: serif;
+}
+
+#circle{
+    float: left;
+    width: 16vw;
+    height: 16vw;
+    margin: 1vw;
+    shape-outside: circle();
+    clip-path: circle();    
+    background: lightblue;    
+}
+
+.upload-label{
+    text-align: center;
+    position: absolute;
+    margin: auto;
+    height: 4vw;
+    top: 7vw;
+    right: 0;
+    bottom: 3vw;
+    left: 0;
+    /* border: 1px solid black; */
+}
+
+#form{
+    margin-top: 13vw;
+    z-index: 10;
+}
+
+.result-divs{
+    background-color: rgb(250, 236, 216);
+    height: 50vw;
+    position: absolute;
+    margin: auto;
+    top: 25vw;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 2vw;
+    /* border: 1px solid black; */
+}
