@@ -77,31 +77,6 @@ app.use("/", require("./testGoogle"))
 //   res.render("testCall")
 // })
 
-/**************Trying Things with IBM*********/
-
-// //trying to recognize a longer audio file with a get request
-// app.get("/", async (req, res) => {
-//   try{
-//     let longTranscription = longCall().catch.console(error);
-//     console.log(`🦉 The transcription I got was ${longTranscription}`);
-//     console.log(longTranscription);
-//     res.render("testCall", {longTranscription})
-//   }
-//   catch(error){
-//     console.error(error);
-//   }
-// })
-
-// async function longCall () {
-//   //set up ibm
-//   const SpeechToTextV1 = require('ibm-watson/speech-to-text/v1');
-//   const { IamAuthenticator } = require('ibm-watson/auth');
-//   const url = process.env.SPEECH_TO_TEXT_URL;
-//   const key = process.env.key
-  
-//   //make our request?
-
-// }
 
 //set up our app to listen
 app.listen(3001, () => {

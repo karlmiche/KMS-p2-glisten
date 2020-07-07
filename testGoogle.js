@@ -29,111 +29,99 @@ router.get("/", async (req, res) => {
   }
 })
 
-router.post("/", uploads.single("filename"),(req, res) => {
-  console.log("biggbutts - post route hit");
-  //get the input field from the user
-  let filename = req.file.path;
-  // console.log(file);
-  let transcription = "testyYY";
-  const bucketName = 'voiceappbucket';
-  async function uploadFile() {
-    // Uploads a local file to the bucket
-    await storage.bucket(bucketName).upload(filename, {
-      // Support for HTTP requests made with `Accept-Encoding: gzip`
-      gzip: true,
-      metadata: {
-        cacheControl: 'public, max-age=31536000',
-      },
-    });
-    console.log(`${filename} uploaded to ${bucketName}.`);
-    res.redirect(`/${req.file.filename}`)
-  }
-  uploadFile().catch(console.error);
+// router.post("/results", uploads.single("filename"),(req, res) => {
+//   console.log("post route hit");
+//   //get the input field from the user
+//   let filename = req.file.path;
+//   const bucketName = 'voiceappbucket';
+//   async function uploadFile() {
+//     // Uploads a local file to the bucket
+//   await storage.bucket(bucketName).upload(filename, {
+//     gzip: true,
+//     metadata: {
+//     cacheControl: 'public, max-age=31536000',
+//     },
+//   });
+//   console.log(`${filename} uploaded to ${bucketName}.`);
+//   res.redirect(`/${req.file.filename}`)
+//   }
+//   uploadFile().catch(console.error);
+// })
+
+// router.get("/:file", (req, res) => {
+//   async function main() {
+//     // Imports the Google Cloud client library
+//     const gcsUri = `gs://voiceappbucket/${filename}`;
+//     const encoding = 'MP3';
+//     const sampleRateHertz = 48000;
+//     const languageCode = 'en-US';
+  
+//     const config = {
+//       encoding: encoding,
+//       sampleRateHertz: sampleRateHertz,
+//       languageCode: languageCode,
+//     };
+  
+//     const audio = {
+//       uri: gcsUri,
+//     };
+  
+//     const request = {
+//       config: config,
+//       audio: audio,
+//     };
+
+//     // Detects speech in the audio file
+//     const [operation] = await client.longRunningRecognize(request)
+//     const [response] = await operation.promise()
+//     console.log(response);
+//     const transcription = response.results.map(result => result.alternatives[0].transcript)
+//     .join('\n');
+//     console.log(`Transcription: ${transcription}`);
+//     res.render("results", {transcription})
+
+       //what I am thinking for adding a transcription to the database
+       let transcribed = transcription;
+       db.transcription.findOrCreate({
+         where: {content : transcribed}
+       }).then(([transcription, created]) => {
+         console.log(`Your transcription has been added to the database!`);
+         res.redirect("/transcriptions")
+       })
+//   }
+//   main().catch(console.error);
+// })
+
+
+/*******Displaying Individual Transcriptions*****/
+router.get("/:title", (req, res) => {
+  db.transcription.findOne({
+    where: { id: req.params.id }
+  }).then((transcription) => {
+    if (!transcription) throw Error()
+    res.render("show", { transcription : transcribed})
+  })
+  .catch((error) => {
+    console.log(error)
+  })
 })
 
-
-router.get("/:file", (req, res) => {
-  async function main() {
-    // Imports the Google Cloud client library
-    const gcsUri = `gs://voiceappbucket/Record-_online-voice-recorder.com_.flac`;
-    const encoding = 'FLAC';
-    const sampleRateHertz = 48000;
-    const languageCode = 'en-US';
-  
-    const config = {
-      encoding: encoding,
-      sampleRateHertz: sampleRateHertz,
-      languageCode: languageCode,
-    };
-  
-    const audio = {
-      uri: gcsUri,
-    };
-  
-    const request = {
-      config: config,
-      audio: audio,
-    };
-
-    // Detects speech in the audio file
-    const [operation] = await client.longRunningRecognize(request)
-    const [response] = await operation.promise()
-    console.log(response);
-    const transcription = response.results.map(result => result.alternatives[0].transcript)
-    .join('\n');
-    console.log(`Transcription: ${transcription}`);
-    res.render("results", {transcription})
-  }
-  main().catch(console.error);
+//adding a note to a transcription
+router.post("/:title/notes", (req, res) => {
+  //do stuff in here
 })
 
-
-// /**********
-//  * Test Call to Transcribe Short Audio Files
-//  */
-// async function main() {
-//   // Imports the Google Cloud client library
-//   const speech = require('@google-cloud/speech');
-//   const fs = require('fs');
-//   const record = require('node-record-lpcm16');
+//calling the natural language API??
 
 
-//   // Creates a client
-//   const client = new speech.SpeechClient();
-
-//   // The name of the audio file to transcribe
-//   const fileName = 'Record-_online-voice-recorder.com_.flac';
-
-//   // Reads a local audio file and converts it to base64
-//   const file = fs.readFileSync(fileName);
-//   const audioBytes = file.toString('base64');
-
-//   // The audio file's encoding, sample rate in hertz, and BCP-47 language code
-//   const audio = {
-//     content: audioBytes,
-//   };
-//   const config = {
-//     encoding: 'FLAC',
-//     sampleRateHertz: 48000,
-//     languageCode: 'en-US',
-//   };
-
-//   const request = {
-//     audio: audio,
-//     config: config,
-//   };
-
-
-// //set up our app to listen
-// app.listen(3001, () => {
-//     "We are listening!"
-//   })
-
-// /*******
-//  * Where do we store files?
-//BUCKETS WORK NOW FOR ME, AT LEAST
-
-
-
+/*********Deleting a Transcription */
+router.delete("/:title", (req, res) => {
+  db.transcription.destroy({
+    where: {title: req.params.name}
+  }).then(function(){
+    res.redirect("/transcriptions")
+  })
+})
 
 module.exports = router;
+
