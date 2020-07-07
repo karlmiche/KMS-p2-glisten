@@ -17,7 +17,7 @@ app.use(express.static(__dirname + '/public/'))
 //   res.render("testCall");
 // })
 
-app.use("/", require("./testGoogle"))
+app.use("/", require("./transcribe"))
 
 /********
  * Test Call for Streaming Audio/Speaking Straight into the Microphone
