@@ -82,16 +82,7 @@ router.get("/:file", (req, res) => {
     const transcription = response.results.map(result => result.alternatives[0].transcript)
     .join('\n');
     console.log(`Transcription: ${transcription}`);
-    try{
-      let transcription = await main().catch(console.error);
-      console.log(`🦉 The transcription I got was ${transcription}`)
-      console.log(transcription);
-      //add transcription by sending object
-      //object needs to be called before it will render
-      res.render("results", {transcription}); 
-    } catch(error){
-      console.error(error);
-    }
+    res.render("results", {transcription})
   }
   main().catch(console.error);
 })
