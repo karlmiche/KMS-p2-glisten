@@ -13,22 +13,20 @@ h1, h2, h3, h4, h5 {
     color: rgb(55, 55, 170);
 }
 
-#navvy{    
-    color: black;
+#navvy{
     display: flex;
+    justify-content: space-evenly;
+    color: black;
     width: 100vw;
     height: 4vw;
-    border-bottom: 4px dotted goldenrod;
 }
 
 nav{
     width: 100vw;
     height: 50px;
+    border-bottom: 4px dotted goldenrod;
 }
 
-li {
-    font-size: 1.8vw;
-}
 
 input{
     font-family: serif;
@@ -49,7 +47,7 @@ input{
     position: absolute;
     margin: auto;
     height: 4vw;
-    top: 7vw;
+    top: 11vw;
     right: 0;
     bottom: 3vw;
     left: 0;
@@ -57,7 +55,7 @@ input{
 }
 
 #form{
-    margin-top: 21vw;
+    margin-top: 25vw;
     z-index: 10;
 }
 

@@ -5,19 +5,22 @@ const express = require("express");
 const multer  = require('multer')
 const path = require("path")
 
-//multer stuff?
+
+//set the destination of the form uploads to disk storage
 let mStorage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "./uploads")
   },
   filename: function (req, file, cb) {
-    cb(null, file.fieldname);
+    //set the extension to the original extension from form input
+    cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
   }
 })
 
+//initialize the upload variable
 let uploads = multer({storage: mStorage})
 
-// // Imports the Google Cloud client library
+//Imports the Google Cloud client library
 const {Storage} = require('@google-cloud/storage');
 const storage = new Storage();
 const speech = require('@google-cloud/speech');
@@ -36,7 +39,8 @@ router.post("/results", uploads.single("filename"),(req, res) => {
   console.log("post route hit");
   //get the input field from the user
   // console.log(req.file);
-  let filename = req.file.fieldname;
+  let filename = req.file.filename;
+  console.log(filename);
   const bucketName = 'voiceappbucket';
   async function uploadFile() {
     // Uploads a local file to the bucket
