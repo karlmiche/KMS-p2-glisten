@@ -3,7 +3,20 @@
 
 const express = require("express");
 const multer  = require('multer')
-let uploads = multer({ dest: 'uploads/' })
+const path = require("path")
+
+//multer stuff?
+let mStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./uploads")
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname);
+  }
+})
+
+let uploads = multer({storage: mStorage})
+
 // // Imports the Google Cloud client library
 const {Storage} = require('@google-cloud/storage');
 const storage = new Storage();
@@ -18,14 +31,16 @@ router.get("/", async (req, res) => {
     res.render("project/form");  
 })
 
+
 router.post("/results", uploads.single("filename"),(req, res) => {
   console.log("post route hit");
   //get the input field from the user
-  let filename = req.file.path;
+  // console.log(req.file);
+  let filename = req.file.fieldname;
   const bucketName = 'voiceappbucket';
   async function uploadFile() {
     // Uploads a local file to the bucket
-  await storage.bucket(bucketName).upload(filename, {
+  await storage.bucket(bucketName).upload(`./uploads/${filename}`, {
     gzip: true,
     metadata: {
     cacheControl: 'public, max-age=31536000',
@@ -40,7 +55,7 @@ router.post("/results", uploads.single("filename"),(req, res) => {
 router.get("/:file", (req, res) => {
   async function main() {
     // Imports the Google Cloud client library
-    const gcsUri = `gs://voiceappbucket/${file}`;
+    const gcsUri = `gs://voiceappbucket/${req.params.file}`;
     const encoding = 'FLAC';
     const sampleRateHertz = 16000;
     const languageCode = 'en-US';
@@ -54,7 +69,7 @@ router.get("/:file", (req, res) => {
     const audio = {
       uri: gcsUri,
     };
-  
+    
     const request = {
       config: config,
       audio: audio,

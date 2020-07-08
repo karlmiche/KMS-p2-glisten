@@ -1,14 +1,14 @@
 <div class="container upload-label">
     <h5>This app can transcribe speech audio files. 
      <h6>Before uploading a file, make sure
-            to convert your file to MP3 format with a service like <a href="https://convertio.co/">convertio</a>.</h6>
+            to convert your file to FLAC format and 16000 kHz with a service like <a href="https://convertio.co/">convertio</a>.</h6>
       <p>You can keep track  of your results in My Transcriptions.</p>
     </h5>
 </div>
 <div class="container" id="form">
     <form action="/results" 
         method="POST" enctype="multipart/form-data">
-        <input type="file" id="audio" name="filename">
+        <input type="file" id="audio">
         <input type="submit">
     </form>
 </div>
