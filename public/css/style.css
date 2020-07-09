@@ -1,5 +1,12 @@
 body {
     font-family: 'Playfair Display', serif;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
 }
 
 h1, h2, h3, h4, h5 {
