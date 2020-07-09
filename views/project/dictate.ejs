@@ -7,7 +7,6 @@
 <div class="container">
     <main>
         <button class="btn" id="startBtn">Start Listening</button>
-        <button class="btn" id="saveBtn">Save transcription</button>
         <div id="result"></div>
         <p id="message" hidden aria-hidden="true">
           Your browser does not support speech recognition at this moment.
@@ -16,14 +15,16 @@
 </div>
 
 <div class="container">
-    <form method="POST" action="/dictation">
-        <input id="dictate" type="hidden" name="dictateResults" value="dictateResults">
+    <form method="POST" action="/transcribe/dictation">
+        <input id="dictate" type="hidden" name="dictateResults" value="">
+        <input class="btn" type="submit" value="Save Transcription">
     </form>    
 </div>
 
 <script>
     window.addEventListener("DOMContentLoaded", () => {
       const button = document.getElementById("startBtn");
+      const dictate = document.getElementById("dictate");
       const result = document.getElementById("result");
       const main = document.getElementsByTagName("main")[0];
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
@@ -55,6 +56,8 @@
                 }
                 p.appendChild(text);
                 result.appendChild(p);
+                dictate.value = p.innerText;
+                console.log("🐱", dictate.value);
             }
         } 
         recognition.continuous = true;
@@ -65,11 +68,6 @@
             listening ? stop() : start();
             listening = !listening;
         })
-        const save = document.getElementById("saveBtn");
-        const dictate = document.getElementById("dictate");
-        save.addEventListener("click", () => {
-            dictate.value = (result.innerHTML);
-        })
     }
-    });
+})
     </script>
