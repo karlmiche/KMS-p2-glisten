@@ -4,6 +4,8 @@
 const express = require("express");
 const multer  = require('multer')
 const path = require("path")
+const mm = require('music-metadata');
+
 
 
 //set the destination of the form uploads to disk storage
@@ -13,7 +15,8 @@ let mStorage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     //set the extension to the original extension from form input
-    cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
+    cb(null, file.fieldname + "butts" + Date.now() + path.extname(file.originalname));
+    // cb(null, file.buffer)
   }
 })
 
@@ -30,10 +33,22 @@ const client = new speech.SpeechClient();
 //set up our app
 let router = express.Router();
 
-router.get("/", async (req, res) => {
-    res.render("project/form");  
+//all the cute views
+router.get("/home", (req, res) => {
+    res.render("project/home");  
 })
 
+router.get("/uploadaudio", (req, res) => {
+  res.render("project/form");
+})
+
+router.get("/transcriptions", (req, res) => {
+  res.render("project/all");
+})
+
+router.get("/dictation", (req, res) => {
+  res.render("project/dictate");
+})
 
 router.post("/results", uploads.single("filename"),(req, res) => {
   console.log("post route hit");
@@ -47,7 +62,10 @@ router.post("/results", uploads.single("filename"),(req, res) => {
   await storage.bucket(bucketName).upload(`./uploads/${filename}`, {
     gzip: true,
     metadata: {
-    cacheControl: 'public, max-age=31536000',
+      content_type : "audio/flac",
+      originalMimeType: "audio/flac",
+      cacheControl: 'public, max-age=31536000',
+      uploadType: "multipart"      
     },
   });
   console.log(`${filename} uploaded to ${bucketName}.`);
@@ -82,20 +100,21 @@ router.get("/:file", (req, res) => {
     // Detects speech in the audio file
     const [operation] = await client.longRunningRecognize(request)
     const [response] = await operation.promise()
-    console.log(response);
+    // console.log("🌽 This is our response:", response);
     const transcription = response.results.map(result => result.alternatives[0].transcript)
     .join('\n');
     console.log(`Transcription: ${transcription}`);
+    //  //what I am thinking for adding a transcription to the database
+    //  let transcribed = transcription;
+    //  db.transcription.findOrCreate({
+    //    where: {content : transcribed}
+    //  }).then(([transcription, created]) => {
+    //    console.log(`Your transcription has been added to the database!`);
+    //    res.redirect("/transcriptions")
+    //  })
     res.render("project/results", {transcription})
 
-      //  //what I am thinking for adding a transcription to the database
-      //  let transcribed = transcription;
-      //  db.transcription.findOrCreate({
-      //    where: {content : transcribed}
-      //  }).then(([transcription, created]) => {
-      //    console.log(`Your transcription has been added to the database!`);
-      //    res.redirect("/transcriptions")
-      //  })
+     
   }
   main().catch(console.error);
 })
@@ -136,6 +155,8 @@ router.get("/:file", (req, res) => {
 // })
 
 //deleting a note LMAO HOW
+
+/**********Web Speech API Calls******/
 
 
 module.exports = router;

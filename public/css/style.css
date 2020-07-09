@@ -2,31 +2,26 @@ body {
     font-family: 'Playfair Display', serif;
 }
 
-li{
-    display: flex;
-    margin-right: 4vw;
-    margin-left: 4vw;
-    justify-content: center;
-}
-
 h1, h2, h3, h4, h5 {
     color: rgb(55, 55, 170);
+}
+
+nav{
+    border-bottom: 4px dotted goldenrod;
+}
+
+nav ul li a{
+    color: black;
+}
+
+nav ul li{
+    color: black;
 }
 
 #navvy{
     display: flex;
     justify-content: space-evenly;
-    color: black;
-    width: 100vw;
-    height: 4vw;
 }
-
-nav{
-    width: 100vw;
-    height: 50px;
-    border-bottom: 4px dotted goldenrod;
-}
-
 
 input{
     font-family: serif;
@@ -40,23 +35,6 @@ input{
     shape-outside: circle();
     clip-path: circle();    
     background: lightblue;    
-}
-
-.upload-label{
-    text-align: center;
-    position: absolute;
-    margin: auto;
-    height: 4vw;
-    top: 11vw;
-    right: 0;
-    bottom: 3vw;
-    left: 0;
-    /* border: 1px solid black; */
-}
-
-#form{
-    margin-top: 25vw;
-    z-index: 10;
 }
 
 .result-divs{
