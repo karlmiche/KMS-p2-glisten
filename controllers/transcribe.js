@@ -60,7 +60,7 @@ router.post("/results", uploads.single("filename"),(req, res) => {
   async function uploadFile() {
     // Uploads a local file to the bucket
   await storage.bucket(bucketName).upload(`./uploads/${filename}`, {
-    gzip: true,
+    gzip: false,
     metadata: {
       content_type : "audio/flac",
       originalMimeType: "audio/flac",
