@@ -2,8 +2,14 @@
   <h2>my transcriptions</h2>
   <p>Select the transcription you would like to view. You can edit that transcription further by clicking its link.
 </div>
+
 <div class="container">
   <div class="collection">
-    <a href="#!" class="collection-item">Alvin</a>
+    <form method="POST" action="/mytranscription">
+      <input hidden type="text" value="<%= transcription.id %>">
+      <% transcription.forEach(function(transcription) { %>
+      <a href="#" class="collection-item"><%= transcription.id %></a>
+      <% }); %>
+    </form>
   </div>
 </div>

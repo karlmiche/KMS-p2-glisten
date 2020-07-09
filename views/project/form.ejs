@@ -1,11 +1,11 @@
 <div class="container upload-label">
     <h2>transcribe speech audio files.</h2>
-     <p>Before uploading a file, make sure
-            to convert your file to FLAC format, 16000 kHz, and mono with a service like <a href="https://convertio.co/">convertio</a>.</h6>
+     <p>Before uploading a file, <strong>make sure
+            to convert your file to FLAC format, 16000 kHz, and mono</strong> with a service like <a href="https://convertio.co/">convertio</a>.</h6>
       You can keep track  of your results in My Transcriptions.</p>
 </div>
 <div class="container" id="form">
-    <form action="/results" 
+    <form action="transcribe/results" 
         method="POST" enctype="multipart/form-data">
         <input type="file" id="audio" name="filename" class="file">
         <input type="submit" class="btn">

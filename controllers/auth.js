@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../models");
-const flash = require("flash");
+const flash = require('connect-flash');
 const passport = require("../config/ppConfig");
+
 
 //register get route
 router.get("/register", function(req, res) {

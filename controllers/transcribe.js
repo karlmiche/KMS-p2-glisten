@@ -5,6 +5,8 @@ const express = require("express");
 const multer  = require('multer')
 const path = require("path")
 const mm = require('music-metadata');
+const db = require('../models');
+
 
 
 
@@ -33,23 +35,6 @@ const client = new speech.SpeechClient();
 //set up our app
 let router = express.Router();
 
-//all the cute views
-router.get("/home", (req, res) => {
-    res.render("project/home");  
-})
-
-router.get("/uploadaudio", (req, res) => {
-  res.render("project/form");
-})
-
-router.get("/transcriptions", (req, res) => {
-  res.render("project/all");
-})
-
-router.get("/dictation", (req, res) => {
-  res.render("project/dictate");
-})
-
 router.post("/results", uploads.single("filename"),(req, res) => {
   console.log("post route hit");
   //get the input field from the user
@@ -69,7 +54,7 @@ router.post("/results", uploads.single("filename"),(req, res) => {
     },
   });
   console.log(`${filename} uploaded to ${bucketName}.`);
-  res.redirect(`/${req.file.filename}`)
+  res.redirect(`/transcribe/${req.file.filename}`)
   }
   uploadFile().catch(console.error);
 })
@@ -104,21 +89,28 @@ router.get("/:file", (req, res) => {
     const transcription = response.results.map(result => result.alternatives[0].transcript)
     .join('\n');
     console.log(`Transcription: ${transcription}`);
-    //  //what I am thinking for adding a transcription to the database
-    //  let transcribed = transcription;
-    //  db.transcription.findOrCreate({
-    //    where: {content : transcribed}
-    //  }).then(([transcription, created]) => {
-    //    console.log(`Your transcription has been added to the database!`);
-    //    res.redirect("/transcriptions")
-    //  })
-    res.render("project/results", {transcription})
-
-     
+    //  what I am thinking for adding a transcription to the database
+     db.transcription.create({
+       content : transcription
+     }).then((transcription) => {
+       console.log(`Your transcription has been added to the database!`);
+     })
+    res.render("project/results", {transcription})     
   }
   main().catch(console.error);
 })
 
+/******Web Speech API Get Route*******/
+router.post("/dication", (req, res) => {
+  let transcription = req.body.value;
+  db.transcription.create({
+    content : transcription
+  }).then((transcription) => {
+      console.log(transcription);
+      console.log(`Your transcription has been added to the database!`);
+  }).catch(console.error)
+  res.redirect("/transcriptions")
+})
 
 // /*******Displaying Individual Transcriptions*****/
 // router.get("/:title", (req, res) => {
@@ -126,7 +118,7 @@ router.get("/:file", (req, res) => {
 //     where: { id: req.params.id }
 //   }).then((transcription) => {
 //     if (!transcription) throw Error()
-//     res.render("show", { transcription : transcribed})
+//     res.render("show", { transcription : transcription})
 //   })
 //   .catch((error) => {
 //     console.log(error)
@@ -155,9 +147,6 @@ router.get("/:file", (req, res) => {
 // })
 
 //deleting a note LMAO HOW
-
-/**********Web Speech API Calls******/
-
 
 module.exports = router;
 

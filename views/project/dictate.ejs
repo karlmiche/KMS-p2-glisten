@@ -7,11 +7,18 @@
 <div class="container">
     <main>
         <button class="btn" id="startBtn">Start Listening</button>
+        <button class="btn" id="saveBtn">Save transcription</button>
         <div id="result"></div>
         <p id="message" hidden aria-hidden="true">
           Your browser does not support speech recognition at this moment.
         </p>
       </main>
+</div>
+
+<div class="container">
+    <form method="POST" action="/dictation">
+        <input id="dictate" type="hidden" name="dictateResults" value="dictateResults">
+    </form>    
 </div>
 
 <script>
@@ -58,10 +65,11 @@
             listening ? stop() : start();
             listening = !listening;
         })
+        const save = document.getElementById("saveBtn");
+        const dictate = document.getElementById("dictate");
+        save.addEventListener("click", () => {
+            dictate.value = (result.innerHTML);
+        })
     }
     });
-
-    //whenever axios is called, sometime after entire page loads
-    //no immediate axios calls since it isn't loaded yet
-    //
     </script>

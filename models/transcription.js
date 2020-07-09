@@ -12,10 +12,12 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       models.transcription.hasMany(models.note)
+      models.transcription.belongsTo(models.user)
     }
   };
   transcription.init({
-    content: DataTypes.TEXT
+    content: DataTypes.TEXT,
+    userId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'transcription',
