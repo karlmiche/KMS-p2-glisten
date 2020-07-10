@@ -6,6 +6,7 @@ const path = require("path")
 const mm = require('music-metadata');
 const db = require('../models');
 
+
 //set up our app
 let router = express.Router();
 
@@ -30,27 +31,28 @@ router.get("/transcriptions", (req, res) => {
     })
   })
   
-  // //deleting a transcription
-  // router.delete("/:id", (req, res) => {
-  //   db.transcription.destroy({
-  //     where: {id : req.params.id}
-  //   }).then(function(){
-  //     res.redirect("/transcriptions")
-  //   })
-  // })
+  //deleting a transcription
+  router.delete("/:id", (req, res) => {
+    db.transcription.destroy({
+      where: {id : req.params.id}
+    }).then(function(){
+      console.log("Your transcription was removed from the database. 💾")
+      res.redirect("/transcriptions")
+    })
+  })
   
   
   /********Adding Notes to a Transcription********/
-  // //adding a note to a transcription
-  // router.post("/:id/notes", (req, res) => {
-  //   let id = req.params.id
-  //   db.note.create({
-  //     name: req.body.name,
-  //     content: req.body.content
-  //   })
-  //   .then(comment => {
-  //     res.redirect(`/transcriptions/${req.params.id}`)
-  //   })
-  // })
+  //adding a note to a transcription
+  router.post("/:id/notes", (req, res) => {
+    let id = req.params.id
+    db.note.create({
+      name: req.body.name,
+      content: req.body.content
+    })
+    .then(comment => {
+      res.redirect(`/transcriptions/${req.params.id}`)
+    })
+  })
   
   module.exports = router;

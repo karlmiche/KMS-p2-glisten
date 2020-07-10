@@ -7,8 +7,9 @@
   <div class="collection">
     <form method="GET" action="/transcriptions/<%= transcription.id %>">
       <% transcription.forEach(function(transcription) { %>
-      <a href="/transcriptions/<%= transcription.id %>" class="collection-item">Transcription <%= transcription.id %></a>
+      <a href="/display/transcriptions/<%= transcription.id %>" class="collection-item">Transcription <%= transcription.id %></a>
       <% }); %>
     </form>
   </div>
 </div>
+

@@ -11,12 +11,15 @@ const passport = require('./config/ppConfig');
 const db = require('./models');
 const isLoggedIn = require('./middleware/isLoggedIn');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const methodOverride = require('method-override')
+
 
 
 //set up our app
 const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/public/'));
+app.use(methodOverride("_method"));
 app.set('view engine', 'ejs')
 app.use(ejsLayouts);
 app.use(flash());
