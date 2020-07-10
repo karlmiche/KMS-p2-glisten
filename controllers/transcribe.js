@@ -82,11 +82,10 @@ router.get("/:file", (req, res) => {
     // Detects speech in the audio file
     const [operation] = await client.longRunningRecognize(request)
     const [response] = await operation.promise()
-    // console.log("🌽 This is our response:", response);
     const transcription = response.results.map(result => result.alternatives[0].transcript)
     .join('\n');
     console.log(`Transcription: ${transcription}`);
-    //  what I am thinking for adding a transcription to the database
+    //add a transcription to our database; how do we do this for a specific user?
      db.transcription.create({
        content : transcription
      }).then((transcription) => {

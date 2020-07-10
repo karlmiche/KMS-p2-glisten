@@ -4,6 +4,8 @@ const db = require("../models");
 const flash = require('connect-flash');
 const passport = require("../config/ppConfig");
 
+router.use(flash());
+
 
 //register get route
 router.get("/register", function(req, res) {
@@ -19,31 +21,31 @@ router.post("/register", function(req, res) {
             name: req.body.name,
             password: req.body.password
         }
-    }).then(function(user, created) {
+    }).then(function([user, created]) {
         //if user was created
         if (created){
             //authenticate user and start authorization process
             console.log("User created 🥥");
             passport.authenticate("local", {
-                successRedirect: "/",
+                successRedirect: "/profile",
                 successFlash: "Thanks for signing up!"
             })(req, res);
-            res.redirect("/"); 
+            res.redirect("/profile"); 
         } else {
             console.log("User email already exists. 🏴‍☠️");
             req.flash("error", "Error: email already exists for user. Try again.");
-            res.redirect("/auth/register");
+            res.redirect("/home");
         }
     }).catch(function(error){
         console.log(`Error found. \nMessage: ${error.message}. Please review - ${error}`);
         req.flash("error", error.message);
-        res.redirect("auth/register");
+        res.redirect("/home");
     })
 })
 
 //login get route
 router.get("/login", function(req, res) {
-    res.render("auth/login")
+    res.render("profile")
 })
 
 //login post route
@@ -52,7 +54,7 @@ router.post("/login", function(req, res, next){
         //if no user authenticated
         if (!user) {
             req.flash("error", "Invalid username or password");
-                return res.redirect("/auth/login");
+                return res.redirect("/home");
             }
         if (error) {
             return next(error);
@@ -71,7 +73,7 @@ router.post("/login", function(req, res, next){
 
 router.get("/logout", function(req, res) {
     req.logout();
-    res.redirect("/")
+    res.redirect("/home")
 })
 
 //export router

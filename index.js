@@ -85,6 +85,6 @@ res.render("project/dictate");
 })
 
 //set up our app to listen
-app.listen(3001, () => {
+app.listen(process.env.PORT || 3000, () => {
     "We are listening!"
   })

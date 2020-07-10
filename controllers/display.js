@@ -21,6 +21,7 @@ router.get("/transcriptions", (req, res) => {
   /*******Displaying Individual Transcriptions*****/
   router.get("/transcriptions/:id", (req, res) => {
     db.transcription.findOne({
+      include: [db.user],
       where: { id: req.params.id }
     }).then((transcription) => {
       if (!transcription) throw Error()
