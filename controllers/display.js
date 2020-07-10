@@ -13,22 +13,22 @@ let router = express.Router();
 /********All Transcriptions*******/
 router.get("/transcriptions", (req, res) => {
     db.transcription.findAll().then(function(transcription) {
-      res.render("all", {transcription : transcription})
-    })
+        res.render("project/all", {transcription})
+    }).catch(error => console.warn(error));
   })
   
-  // /*******Displaying Individual Transcriptions*****/
-  // router.get("/:title", (req, res) => {
-  //   db.transcription.findOne({
-  //     where: { id: req.params.id }
-  //   }).then((transcription) => {
-  //     if (!transcription) throw Error()
-  //     res.render("show", { transcription : transcription})
-  //   })
-  //   .catch((error) => {
-  //     console.log(error)
-  //   })
-  // })
+  /*******Displaying Individual Transcriptions*****/
+  router.get("/transcriptions/:id", (req, res) => {
+    db.transcription.findOne({
+      where: { id: req.params.id }
+    }).then((transcription) => {
+      if (!transcription) throw Error()
+      res.render("project/show", { transcription : transcription})
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  })
   
   // //deleting a transcription
   // router.delete("/:id", (req, res) => {

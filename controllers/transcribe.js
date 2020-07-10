@@ -92,7 +92,7 @@ router.get("/:file", (req, res) => {
      }).then((transcription) => {
        console.log(`Your transcription has been added to the database!`);
      })
-    res.redirect("project/results", {transcription})     
+    res.render("project/results", {transcription})     
   }
   main().catch(console.error);
 })
@@ -103,10 +103,9 @@ router.post("/dictation", (req, res) => {
   db.transcription.create({
     content : transcription
   }).then((transcription) => {
-      console.log(transcription);
       console.log(`Your transcription has been added to the database!`);
   }).catch(console.error)
-  res.redirect("/transcriptions")
+  res.redirect("/display/transcriptions")
 })
 
 module.exports = router;

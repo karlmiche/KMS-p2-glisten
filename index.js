@@ -73,9 +73,9 @@ app.get("/uploadaudio", (req, res) => {
 res.render("project/form");
 })
 
-app.get("/transcriptions", (req, res) => {
-res.render("project/all");
-})
+// app.get("/transcriptions", (req, res) => {
+// res.render("project/all");
+// })
 
 app.get("/dictation", (req, res) => {
 res.render("project/dictate");

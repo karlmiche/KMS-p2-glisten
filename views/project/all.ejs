@@ -5,10 +5,9 @@
 
 <div class="container">
   <div class="collection">
-    <form method="POST" action="/mytranscription">
-      <input hidden type="text" value="<%= transcription.id %>">
+    <form method="GET" action="/transcriptions/<%= transcription.id %>">
       <% transcription.forEach(function(transcription) { %>
-      <a href="#" class="collection-item"><%= transcription.id %></a>
+      <a href="/transcriptions/<%= transcription.id %>" class="collection-item">Transcription <%= transcription.id %></a>
       <% }); %>
     </form>
   </div>
