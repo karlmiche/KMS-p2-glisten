@@ -37,7 +37,7 @@ router.get("/transcriptions", (req, res) => {
       where: {id : req.params.id}
     }).then(function(){
       console.log("Your transcription was removed from the database. 💾")
-      res.redirect("/transcriptions")
+      res.redirect("/display/transcriptions")
     })
   })
   

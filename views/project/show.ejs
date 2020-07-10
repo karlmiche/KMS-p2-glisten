@@ -8,11 +8,11 @@
 </div>
 
 <div id="delete-transcription" class="container">
-    <form method="POST" action="/display/transcriptions/<%= transcription.id %>?_method=DELETE">
-        <button class="btn" type="submit" value="delete">Delete</button>
+    <form method="POST" action="/display/<%= transcription.id %>?_method=DELETE">
+        <button class="btn" type="submit" value="delete">Delete Transcription</button>
         </form>
 </div>
-
+<br><br><br><br><br><br>
 <div id="new-note" class="container">
     <form method="POST" action="#">
         <label for="content">Make A New Note</label>
