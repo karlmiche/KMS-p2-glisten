@@ -3,16 +3,18 @@ const router = express.Router();
 const db = require("../models");
 const flash = require('connect-flash');
 const passport = require("../config/ppConfig");
+const isLoggedIn = require('../middleware/isLoggedIn');
+
 
 router.use(flash());
 
 
-//register get route
+//register GET route
 router.get("/register", function(req, res) {
-    res.render("project/home");
+    res.render("project/register");
 })
 
-//register post route
+//register POST route
 router.post("/register", function(req, res) {
     db.user.findOrCreate({
         where: {
@@ -34,7 +36,7 @@ router.post("/register", function(req, res) {
         } else {
             console.log("User email already exists. 🏴‍☠️");
             req.flash("error", "Error: email already exists for user. Try again.");
-            res.redirect("/home");
+            res.redirect("/login");
         }
     }).catch(function(error){
         console.log(`Error found. \nMessage: ${error.message}. Please review - ${error}`);
@@ -43,12 +45,12 @@ router.post("/register", function(req, res) {
     })
 })
 
-//login get route
+//login GET route
 router.get("/login", function(req, res) {
-    res.render("profile")
+    res.render("project/login")
 })
 
-//login post route
+//login POST route
 router.post("/login", function(req, res, next){
     passport.authenticate("local", function(error, user, info){
         //if no user authenticated
@@ -71,9 +73,10 @@ router.post("/login", function(req, res, next){
     })(req, res, next);
 });
 
+//logout GET route
 router.get("/logout", function(req, res) {
     req.logout();
-    res.redirect("/home")
+    res.redirect("/auth/login")
 })
 
 //export router

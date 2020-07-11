@@ -54,14 +54,14 @@ app.use(function(req, res, next) {
 });
 
 //set up our controllers
-app.use("/transcribe", require("./controllers/transcribe"));
 app.use("/auth", require("./controllers/auth"));
+app.use("/transcribe", require("./controllers/transcribe"));
 app.use("/display", require("./controllers/display"));
 
 //ROUTES
-app.get('/', function(req, res) {
+app.get('/home', function(req, res) {
   // check to see if user logged in
-  res.render('index');
+  res.render("project/home");
 })
 
 app.get('/profile', isLoggedIn, function(req, res) {
