@@ -1,15 +1,23 @@
+<!-- if the user is logged out, or there is no user -->
+<% if(!currentUser) { %>
+  <div class="container">
+  <h5><a href="/auth/register">Register</a> or <a href="/auth/login">Login</a> to start recording or uploading audio.<h5>
+  </div>
+
+<!-- you can view the transciptions if you have made some and are logged in -->
+<% } else { %>
 <div class="container">
   <h2><%= currentUser.name %>'s transcriptions</h2>
   <p>Select the transcription you would like to view. You can edit that transcription further by clicking its link.
 </div>
 
+<!-- if the current user has transcriptions to view, these are their transcriptions -->
 <div class="container">
   <div class="collection">
-    <form method="GET" action="/transcriptions/<%= transcription.id %>">
-      <% transcription.forEach(function(transcription) { %>
-      <a href="/display/transcriptions/<%= transcription.id %>" class="collection-item">Transcription <%= transcription.id %></a>
-      <% }); %>
-    </form>
-  </div>
+        <% transcriptions.forEach(function(transcription) { %>
+      <a href="/display/transcriptions/<%= transcription.id %>" class="collection-item">Transcription: <%= transcription.content %></a>
+          <% }); %>
+      <% } %>
+  </div>    
 </div>
 

@@ -13,9 +13,13 @@ let router = express.Router();
 
 /********All Transcriptions*******/
 router.get("/transcriptions", (req, res) => {
-    db.transcription.findAll().then(function(transcription) {
-        res.render("project/all", {transcription})
-    }).catch(error => console.warn(error));
+    db.transcription.findAll({
+      where: {
+        userId : req.user.id
+      }
+    }).then(function(transcriptions) {
+      res.render("project/all", {transcriptions})
+    }).catch(error => console.log(error));
   })
   
   /*******Displaying Individual Transcriptions*****/
@@ -58,6 +62,8 @@ router.get("/transcriptions", (req, res) => {
   //editing notes
 
   //deleting notes from a transcription
+
+  //wes's suggested debug
 //   db.user.findAll().then( users => {
 //     users.forEach( user => {
 //       user.getTranscriptions().then( transcriptions => {
