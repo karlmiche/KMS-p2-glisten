@@ -47,7 +47,7 @@ router.post("/register", function(req, res) {
 
 //login GET route
 router.get("/login", function(req, res) {
-    res.render("project/login")
+    res.render("project/home")
 })
 
 //login POST route
