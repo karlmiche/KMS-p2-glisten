@@ -54,5 +54,24 @@ router.get("/transcriptions", (req, res) => {
       res.redirect(`/transcriptions/${req.params.id}`)
     })
   })
-  
+
+  //editing notes
+
+  //deleting notes from a transcription
+//   db.user.findAll().then( users => {
+//     users.forEach( user => {
+//       user.getTranscriptions().then( transcriptions => {
+//         transcriptions.forEach( transcription => {
+//           console.log(transcription.content);
+//         })
+//       })
+//       .catch( error => {
+//         console.log('user.getTranscriptions', error);
+//       })
+//     })
+//   })
+//   .catch( error => {
+//     console.log('db.user.findAll', error);
+//   })
+
   module.exports = router;

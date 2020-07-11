@@ -5,6 +5,8 @@ const multer  = require('multer')
 const path = require("path")
 const mm = require('music-metadata');
 const db = require('../models');
+const isLoggedIn = require("../middleware/isLoggedIn");
+
 
 //set the destination of the form uploads on "uploadaudio" to disk storage
 let mStorage = multer.diskStorage({
@@ -85,27 +87,59 @@ router.get("/:file", (req, res) => {
     const transcription = response.results.map(result => result.alternatives[0].transcript)
     .join('\n');
     console.log(`Transcription: ${transcription}`);
-    //add a transcription to our database; how do we do this for a specific user?
-     db.transcription.create({
-       content : transcription
-     }).then((transcription) => {
-       console.log(`Your transcription has been added to the database!`);
-     })
-    res.render("project/results", {transcription})     
+    //add a transcription to our database for a specific user
+    let userId = req.user.dataValues.id;
+    //find that user in the database
+    db.user.findOne({ where : {id: userId} })
+    //use sequelize proprietary association functionality
+    .then( user => {
+      //for that user, create a transcription where:
+      user.createTranscription({
+        //the content is what we just grabbed
+        content: transcription
+    })
+    //then to handle this with a redirect to all.ejs
+    .then( (transcription) => {
+      console.log(`Your trancscription has been added to the database! 🗒`)
+    })
+      res.redirect("/display/transcriptions")
+    })
   }
   main().catch(console.error);
 })
 
 /******Web Speech API Post Route*******/
-router.post("/dictation", (req, res) => {
+router.post("/dictation", isLoggedIn, (req, res) => {
   let transcription = req.body.dictateResults;
-  db.transcription.create({
-    content : transcription
-  }).then((transcription) => {
-      console.log(`Your transcription has been added to the database!`);
-  }).catch(console.error)
-  res.redirect("/display/transcriptions")
+  let userId = req.user.dataValues.id;
+  db.user.findOne({ where: { id: userId} })
+    // 1. supplied an arrow function with an argument of the user that was found
+    .then( user => {
+    // 2. used create with association method 
+      user.createTranscription({
+        content: transcription
+    })
+    .then( (transcription) => {
+        console.log(`Your trancscription has been added to the database! 🗒`);
+        // 3. moved redirect into database promise
+        res.redirect("/display/transcriptions")
+    })
+    // 4. supplied catch with arrow function that has an argument of error
+    .catch(error => console.log(error))
+  })
 })
 
+// router.post("/dictation", (req, res) => {
+//   let transcription = req.body.dictateResults;
+//   db.transcription.create({
+//     content : transcription
+//   }).then((transcription) => {
+//       console.log(`Your transcription has been added to the database!`);
+//   }).catch(console.error)
+//   res.redirect("/display/transcriptions")
+// })
+
 module.exports = router;
+
+
 

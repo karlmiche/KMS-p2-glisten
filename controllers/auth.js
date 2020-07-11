@@ -76,7 +76,7 @@ router.post("/login", function(req, res, next){
 //logout GET route
 router.get("/logout", function(req, res) {
     req.logout();
-    res.redirect("/auth/login")
+    res.render("project/notUser")
 })
 
 //export router
