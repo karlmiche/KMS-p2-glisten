@@ -2,11 +2,18 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('notes', {
+      userId: {
+        type: Sequelize.INTEGER
+        },
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
+      },
+      //added this column to define transcriptionId
+      transcriptionId: {
+        type: Sequelize.INTEGER,
       },
       title: {
         type: Sequelize.STRING

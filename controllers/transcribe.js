@@ -129,15 +129,6 @@ router.post("/dictation", isLoggedIn, (req, res) => {
   })
 })
 
-// router.post("/dictation", (req, res) => {
-//   let transcription = req.body.dictateResults;
-//   db.transcription.create({
-//     content : transcription
-//   }).then((transcription) => {
-//       console.log(`Your transcription has been added to the database!`);
-//   }).catch(console.error)
-//   res.redirect("/display/transcriptions")
-// })
 
 module.exports = router;
 

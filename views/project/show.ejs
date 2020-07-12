@@ -15,13 +15,41 @@
 
 
 <br><br><br><br><br><br>
+<div class="container">
+    <h5>take notes on this transcription</h5>
+</div>
 <div id="new-note" class="container">
-    <form method="POST" action="#">
-        <label for="content">Make A New Note</label>
-        <input type="text" class="materialize-textarea" id="note-content" name="content" required>
+    <form method="POST" action="/display/<%= transcription.id %>/notes">
+        <label for="title">Title This Note</label>
+        <input type="text" class="materialize-textarea" id="note-title" value="title" name="title" required>
+        <label for="content">Note Content</label>
+        <input type="text" class="materialize-textarea" id="note-content" value="content" name="content" required>
         <input type="submit" class="btn">
     </form>
 </div>
+
+
+<!-- current users who are logged in can see their notes -->
+<% if(currentUser) { %> 
+<div class="container">
+    <ul class="collection">
+    <% transcription.notes.forEach(function(note) { %>
+        <li class="collection-item">
+            <h5><%= note.title %></h5>
+            <p><%= note.content %></p>
+            <!-- form to update note -->
+            <form method="POST" action="/display/<%= transcription.id %>/notes/<% note.title %>?_method=PUT">
+                <button class="btn" type="submit" value="update">Edit Note</button>
+                </form>
+            <!-- form to delete note -->
+            <form method="POST" action="#">
+                <button class="btn" type="submit" value="delete">Delete Note</button>
+                </form>
+        </li>
+        <% }) %>
+    </ul>
+</div>
+<% } %>
 
 
 

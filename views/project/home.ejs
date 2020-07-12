@@ -1,10 +1,17 @@
 <div class="container"><h2>glisten (good listen)</h2>
     <p>I love making my friends' lives a little bit easier, and I noticed that their research involved recording conversations with subjects for qualitative analysis. This meant hours of effortful transcription. What if, there was an app that could do some of that legwork?
+    </p>
+
+    <p>        I can transcribe up to 480 minutes of audio a month for free (please be nice to me and my Google Cloud API account)! 
+    </p>
     
-        At the moment, this app is functional in transcribing submitted audio files of one minute. I can transcribe up to 480 minutes of audio a month for free (please be nice to me and my Google Cloud API account)! 
-        </p>
-    
+    <% if (!currentUser) { %>
     <h5>Login or register to get started!</h5></div>
+    <% } %>
+    <br>
+    <div class="container">
+        <img class="pics" src="/img/moon.png">
+    </div>
 
 
     

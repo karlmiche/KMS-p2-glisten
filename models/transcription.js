@@ -17,7 +17,8 @@ module.exports = (sequelize, DataTypes) => {
   };
   transcription.init({
     content: DataTypes.TEXT,
-    userId: DataTypes.INTEGER
+    // userId: DataTypes.INTEGER,
+    // transcriptionId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'transcription',

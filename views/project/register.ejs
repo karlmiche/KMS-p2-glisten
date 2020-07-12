@@ -1,3 +1,14 @@
+<!-- if the user is logged in already -->
+<% if(currentUser) { %>
+    <div class="container">
+        <h5>You are already logged in!</h5> 
+        <h6>No need to register.</h6>
+            <p>What would you like to do next? Click the links below.</p>
+            <img class="pics" src="/img/flower.png">
+        </div>
+
+<!-- if no one is logged in or signed up, have them login or sign up -->
+<% } else { %>
 <div class="container">
     <form action="/auth/register" method="POST">
         <h5>Register to Begin Saving Your Transcriptions</h5>
@@ -17,3 +28,4 @@
     </form>
     </div>
 </div>
+<% } %>

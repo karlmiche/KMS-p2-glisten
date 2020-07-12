@@ -5,7 +5,7 @@ const multer  = require('multer')
 const path = require("path")
 const mm = require('music-metadata');
 const db = require('../models');
-
+const isLoggedIn = require("../middleware/isLoggedIn");
 
 //set up our app
 let router = express.Router();
@@ -25,13 +25,13 @@ router.get("/transcriptions", (req, res) => {
   /*******Displaying Individual Transcriptions*****/
   router.get("/transcriptions/:id", (req, res) => {
     db.transcription.findOne({
-      where: { id: req.params.id }
+      where: { id: req.params.id },
+      include: [db.note]
     }).then((transcription) => {
       if (!transcription) throw Error()
       res.render("project/show", { transcription : transcription})
     })
-    .catch((error) => {
-      console.log(error)
+    .catch((error) => {console.log(error)
     })
   })
   
@@ -42,42 +42,55 @@ router.get("/transcriptions", (req, res) => {
     }).then(function(){
       console.log("Your transcription was removed from the database. 💾")
       res.redirect("/display/transcriptions")
-    })
+    }).catch(error => {console.log("😭", error)})
   })
   
   
-  /********Adding Notes to a Transcription********/
-  //adding a note to a transcription
-  router.post("/:id/notes", (req, res) => {
-    let id = req.params.id
-    db.note.create({
-      name: req.body.name,
-      content: req.body.content
+/********Note Routes********/
+//adding a note to a transcription
+router.post("/:id/notes", isLoggedIn, (req, res) => {
+  db.note.create({
+    transcriptionId: req.params.id,
+    userId: req.user.id,
+    content: req.body.content,
+    title: req.body.title
     })
-    .then(comment => {
-      res.redirect(`/transcriptions/${req.params.id}`)
+  .then(note => {
+    console.log(`Your note was added to this transcription ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️`);
+    // 3. moved redirect into database promise
+    res.redirect(`/display/transcriptions/${req.params.id}`)
     })
+    // 4. supplied catch with arrow function that has an argument of error
+    .catch(error => console.log("😭😭😭😭😭😭😭😭", error));
+})
+
+//editing notes
+router.put(`/:id/notes`, isLoggedIn, (req, res) => {
+  db.note.update({
+    where: {
+      title: title
+    }
   })
+  .then(note => {
+    console.log(`Your note was successfully updated! 🎺🎺🎺🎺🎺🎺🎺`);
+    res.redirect(`/display/transcriptions/:id`)
+  })
+  .catch(error => console.log("☄️☄️☄️☄️☄️☄️", error));
+})
+  
 
-  //editing notes
+//deleting notes from a transcription
+router.delete(":/id/notes", isLoggedIn, (req, res) => {
+  db.note.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(note => {
+    console.log(`Your note was destroyed! 🌪🌪🌪🌪🌪`);
+    res.redirect(`/display/transcriptions/${req.params.id}`);
+  })
+  .catch(error => console.log("👁‍🗨👁‍🗨👁‍🗨👁‍🗨👁‍🗨👁‍🗨👁‍🗨👁‍🗨", error))
+})
 
-  //deleting notes from a transcription
-
-  //wes's suggested debug
-//   db.user.findAll().then( users => {
-//     users.forEach( user => {
-//       user.getTranscriptions().then( transcriptions => {
-//         transcriptions.forEach( transcription => {
-//           console.log(transcription.content);
-//         })
-//       })
-//       .catch( error => {
-//         console.log('user.getTranscriptions', error);
-//       })
-//     })
-//   })
-//   .catch( error => {
-//     console.log('db.user.findAll', error);
-//   })
-
-  module.exports = router;
+module.exports = router;

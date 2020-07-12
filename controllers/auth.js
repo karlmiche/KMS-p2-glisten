@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require("../models");
 const flash = require('connect-flash');
 const passport = require("../config/ppConfig");
-const isLoggedIn = require('../middleware/isLoggedIn');
+// const isLoggedIn = require('../middleware/isLoggedIn');
 
 
 router.use(flash());

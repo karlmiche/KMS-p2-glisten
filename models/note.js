@@ -12,11 +12,14 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       models.note.belongsTo(models.transcription)
+      models.note.belongsTo(models.user)
     }
   };
   note.init({
     title: DataTypes.STRING,
-    content: DataTypes.TEXT
+    content: DataTypes.TEXT,
+    userId: DataTypes.INTEGER,
+    transcriptionId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'note',

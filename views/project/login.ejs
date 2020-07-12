@@ -1,3 +1,14 @@
+<!-- if the user is logged in already -->
+<% if(currentUser) { %>
+    <div class="container">
+    <h5>You are already logged in!</h5> 
+    <h6>No need to login twice.</h6>
+        <p>What would you like to do next? Click the links below.</p>
+        <img class="pics" src="/img/moon.png">
+    </div>
+
+<!-- if no one is logged in or signed up, have them login or sign up -->
+<% } else { %>
 <div class="container">
     <form action="/auth/login" method="POST">
         <h5>Log In</h5>
@@ -11,3 +22,4 @@
         </div>
         <input class="btn" type="submit">
     </form>
+<% } %>
