@@ -88,7 +88,7 @@ router.get("/:file", (req, res) => {
     .join('\n');
     console.log(`Transcription: ${transcription}`);
     //add a transcription to our database for a specific user
-    let userId = req.user.dataValues.id;
+    let userId = req.user.id;
     //find that user in the database
     db.user.findOne({ where : {id: userId} })
     //use sequelize proprietary association functionality
