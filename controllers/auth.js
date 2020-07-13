@@ -36,7 +36,7 @@ router.post("/register", function(req, res) {
         } else {
             console.log("User email already exists. 🏴‍☠️");
             req.flash("error", "Error: email already exists for user. Try again.");
-            res.redirect("/login");
+            res.redirect("/home");
         }
     }).catch(function(error){
         console.log(`Error found. \nMessage: ${error.message}. Please review - ${error}`);
