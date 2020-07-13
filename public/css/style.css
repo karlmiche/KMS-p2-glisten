@@ -61,3 +61,19 @@ input{
     width: 250px;
     height: auto;
 }
+
+.transcription-header{
+    display: flex;
+    justify-content: left;    
+}
+
+.note-form{
+    width: 85vw;
+    display: flex;
+    justify-content: left;
+}
+
+#del-tran{
+    margin: 15px;
+}
+

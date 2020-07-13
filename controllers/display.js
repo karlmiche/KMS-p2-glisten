@@ -47,7 +47,9 @@ router.get("/transcriptions", (req, res) => {
   
   
 /********Note Routes********/
+
 //adding a note to a transcription
+//this route works
 router.post("/:id/notes", isLoggedIn, (req, res) => {
   db.note.create({
     transcriptionId: req.params.id,
@@ -65,25 +67,34 @@ router.post("/:id/notes", isLoggedIn, (req, res) => {
 })
 
 //editing notes
-router.put(`/:id/notes`, isLoggedIn, (req, res) => {
-  db.note.update({
-    where: {
-      title: title
-    }
-  })
-  .then(note => {
-    console.log(`Your note was successfully updated! 🎺🎺🎺🎺🎺🎺🎺`);
-    res.redirect(`/display/transcriptions/:id`)
-  })
-  .catch(error => console.log("☄️☄️☄️☄️☄️☄️", error));
-})
+// router.put("/transcriptions/:id/:noteId", isLoggedIn, (req, res) => {
+//   let noteId = req.params.noteId;
+//   let id = req.params.id;
+//   let x = noteId + id;
+//   console.log(`${x} 🔴`);
+//   db.note.update({
+//     content: req.body.content
+//   }, {
+//     where: {
+//       id: req.params.x
+//     }
+//   })
+//   .then(note => {
+//     console.log(`Your note was successfully updated! 🎺🎺🎺🎺🎺🎺🎺`);
+//     res.redirect(`/display/transcriptions/${res.params.id}`)
+//   })
+//   .catch(error => console.log("☄️☄️☄️☄️☄️☄️", error));
+// })
   
 
 //deleting notes from a transcription
-router.delete(":/id/notes", isLoggedIn, (req, res) => {
+router.delete("/transcriptions/:id/:noteId", isLoggedIn, (req, res) => {
+  let noteId = req.params.noteId;
+  let id = req.params.id;
+  let x = noteId + id;
   db.note.destroy({
     where: {
-      id: req.params.id
+      id: req.params.noteId
     }
   })
   .then(note => {

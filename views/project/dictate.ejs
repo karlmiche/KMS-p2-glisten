@@ -4,21 +4,24 @@
         to "my transcriptions" if you'd like to do so.
     </p>
 </div>
-<div class="container">
-    <main>
-        <button class="btn" id="startBtn">Start Listening</button>
-        <div id="result"></div>
-        <p id="message" hidden aria-hidden="true">
-          Your browser does not support speech recognition at this moment.
-        </p>
-      </main>
-</div>
 
-<div class="container">
-    <form method="POST" action="/transcribe/dictation">
-        <input id="dictate" type="hidden" name="dictateResults" value="">
-        <input class="btn" type="submit" value="Save Transcription">
-    </form>    
+<div class="row container">
+    <div class="container col s4">
+        <main>
+            <button class="btn cyan darken-3" id="startBtn">Start Listening</button>
+            <div id="result"></div>
+            <p id="message" hidden aria-hidden="true">
+            Your browser does not support speech recognition at this moment.
+            </p>
+        </main>
+    </div>
+
+    <div class="container col s4">
+        <form method="POST" action="/transcribe/dictation">
+            <input id="dictate" type="hidden" name="dictateResults" value="">
+            <input class="btn cyan darken-3" type="submit" value="Save Transcription">
+        </form>    
+    </div>
 </div>
 
 <script>

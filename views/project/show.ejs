@@ -1,31 +1,32 @@
-<div class="container">
-    <h2><%= transcription.id %></h2>
-</div>
-<div class="container">
-    <div id="delete-transcription">
+<!-- can view the id of the transcription and delete if desired -->
+<div class="container row transcription-header">
+    <div class="col"><h5>your transcription will appear here:</h5></div>
+    <div class="col">
         <form method="POST" action="/display/<%= transcription.id %>?_method=DELETE">
-            <button class="btn" type="submit" value="delete">Delete Transcription</button>
-            </form>
+        <button id="del-tran" class="btn cyan darken-3" type="submit" value="delete">Delete Transcription <%= transcription.id %></button>
+        </form>
     </div>
 </div>
-<div class="container">
+
+
+<!-- where the transcription will appear -->
+<div class="container transcription">
     <div id="circle"></div>
     <p><%= transcription.content %></p>
 </div>
 
-
-<br><br><br><br><br><br>
-<div class="container">
-    <h5>take notes on this transcription</h5>
-</div>
-<div id="new-note" class="container">
-    <form method="POST" action="/display/<%= transcription.id %>/notes">
-        <label for="title">Title This Note</label>
-        <input type="text" class="materialize-textarea" id="note-title" value="title" name="title" required>
-        <label for="content">Note Content</label>
-        <input type="text" class="materialize-textarea" id="note-content" value="content" name="content" required>
-        <input type="submit" class="btn">
-    </form>
+<!-- form to make a new note -->
+<div class="container row note-form">
+    <div id="new-note" class="col">
+            <h5 id="note-title">take notes on this transcription</h5>
+        <form method="POST" action="/display/<%= transcription.id %>/notes">
+            <label for="title">Title This Note</label>
+            <input type="text" class="materialize-textarea" id="note-title" value="title" name="title" required>
+            <label for="content">Note Content</label>
+            <input type="text" class="materialize-textarea" id="note-content" value="content" name="content" required>
+            <input type="submit" class="btn cyan darken-3">
+        </form>
+    </div>
 </div>
 
 
@@ -37,21 +38,27 @@
         <li class="collection-item">
             <h5><%= note.title %></h5>
             <p><%= note.content %></p>
-            <!-- form to update note -->
-            <form method="POST" action="/display/<%= transcription.id %>/notes/<% note.title %>?_method=PUT">
-                <button class="btn" type="submit" value="update">Edit Note</button>
-                </form>
+          <div class="row">
+                <!-- form to update note -->
+            <!-- <div class="col s3">
+                <form method="POST" action="/display/transcriptions/<%= transcription.id %>/<%= note.id %>/?_method=PUT">
+                    <button class="btn" type="submit" value="update">Edit Note</button>
+                    </form>
+            </div> -->
             <!-- form to delete note -->
-            <form method="POST" action="#">
-                <button class="btn" type="submit" value="delete">Delete Note</button>
-                </form>
+                <div class="row">
+                    <div class="col s3">
+                        <form method="POST" action="/display/transcriptions/<%= transcription.id %>/<%= note.id %>/?_method=DELETE">
+                            <button class="btn cyan darken-3" type="submit" value="delete">Delete Note</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </li>
         <% }) %>
     </ul>
 </div>
 <% } %>
-
-
 
 
 

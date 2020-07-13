@@ -15,7 +15,7 @@ let mStorage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     //set the extension to the original extension from form input
-    cb(null, file.fieldname + "butts" + Date.now() + path.extname(file.originalname));
+    cb(null, file.fieldname + "file" + Date.now() + path.extname(file.originalname));
     // cb(null, file.buffer)
   }
 })
